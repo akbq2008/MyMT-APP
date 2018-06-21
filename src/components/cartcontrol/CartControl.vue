@@ -2,11 +2,11 @@
   <div class="goods_control">
     <transition name="move">
       <!-- 商品减少 -->
-      <div class="cart_minus" v-show="goods.count" @click="decreaseNum">
+      <div class="cart_minus" v-show="items.count" @click="decreaseNum">
         <span>-</span>
       </div>
     </transition>
-    <span class="goods_num" v-show="goods.count">{{goods.count}}</span>
+    <span class="goods_num" v-show="items.count">{{items.count}}</span>
     <!-- 商品增加-->
     <div class="cart_add" @click="increaseNum">
       <span>+</span>
@@ -18,24 +18,26 @@
 import Vue from "vue";
 export default {
   props: {
-    goods: {
+    items: {
       type: Object,
-      default: {}
+      default: function() {
+        return {};
+      }
     }
   },
   methods: {
     // 增加商品的个数
     increaseNum() {
-      if (!this.goods.count) {
+      if (!this.items.count) {
         //添加3个参数，添加的对象，添加的键名，键值
-        Vue.set(this.goods, "count", 1);
+        Vue.set(this.items, "count", 1);
       } else {
-        this.goods.count++;
+        this.items.count++;
       }
     },
     //减少商品的个数
     decreaseNum() {
-      this.goods.count--;
+      this.items.count--;
     }
   }
 };

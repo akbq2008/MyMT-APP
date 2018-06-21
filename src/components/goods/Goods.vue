@@ -26,21 +26,21 @@
             <h3 class="goods_title">{{item.name}}</h3>
             <!-- 商品detail -->
             <ul class="goods_box">
-              <li class="goods_item" v-for="(goods,index) in item.spus" :key="index">
-                <img class="goods_pic" :src="goods.picture" alt="pic">
+              <li class="goods_item" v-for="(items,index) in item.spus" :key="index">
+                <img class="goods_pic" :src="items.picture" alt="pic">
                 <div class="goods_detail">
-                  <h3>{{goods.name}}</h3>
+                  <h3>{{items.name}}</h3>
                   <p class="goods_sell">
-                    <span>{{goods.month_saled_content}}</span>
-                    <span>{{goods.praise_content}}</span>
+                    <span>{{items.month_saled_content}}</span>
+                    <span>{{items.praise_content}}</span>
                   </p>
                   <p>
-                    <span class="goods_price">￥{{goods.min_price}}</span>
-                    <span class="goods_unit">/{{goods.unit}}</span>
+                    <span class="goods_price">￥{{items.min_price}}</span>
+                    <span class="goods_unit">/{{items.unit}}</span>
                   </p>
                 </div>
                 <div class="cart_add ">
-                  <app-add :goods="goods"></app-add>
+                  <app-add :items="items"></app-add>
                 </div>
                 <!-- 商品增删 -->
               </li>
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="shop_cart">
-      <shop-cart :poi_info="poi_info" :selectFood="selectFood"></shop-cart>
+      <shop-cart :poi_info="poi_info" :selectFood="selectFood" :goods="goods"></shop-cart>
     </div>
   </div>
 </template>
@@ -59,11 +59,12 @@
 import CartControl from "../cartControl/CartControl";
 import ShopCart from "../shopCart/ShopCart";
 import Bscroll from "better-scroll";
+import Vue from "vue";
 export default {
   data() {
     return {
       initData: {}, //数据初始化
-      goods: [],
+      goods: [], //商品数组
       goods_content: {}, //右侧商品内容滚动
       poi_info: {}, //餐厅信息
       listHeight: [],
@@ -80,7 +81,6 @@ export default {
         const result = data.data.data;
         this.initData = result;
         this.goods = this.initData.food_spu_tags;
-        // console.log(this.goods);
         this.poi_info = this.initData.poi_info;
         const options = {
           scrollY: true, //
@@ -116,16 +116,22 @@ export default {
       set() {}
     },
     //当值发生改变时才会监听
-    selectFood() {
-      let shoppingCar = [];
-      this.goods.forEach(element => {
-        element.spus.forEach(items => {
-          if (items.count > 0) {
-            shoppingCar.push(items);
-          }
+    selectFood: {
+      get() {
+        let shoppingCar = [];
+        this.goods.forEach(element => {
+          element.spus.forEach(items => {
+            if (items.count > 0) {
+              Vue.set(items, "total", 0);
+              items.total = items.count * items.min_price;
+              shoppingCar.push(items);
+            } else {
+            }
+          });
         });
-      });
-      return shoppingCar;
+        return shoppingCar;
+      },
+      set() {}
     }
   },
   methods: {
@@ -254,7 +260,6 @@ export default {
 .shop_cart {
   position: fixed;
   background: #1313137a;
-  height: 51px;
   left: 0;
   right: 0;
   bottom: 0px;

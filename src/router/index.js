@@ -8,8 +8,13 @@ Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  linkActiveClass:"active",
+  linkActiveClass: "active",
   routes: [
+    {
+      path: "/",
+      redirect: "/goods",
+      component: Goods
+    },
     {
       path: "/goods",
       name: "goods",

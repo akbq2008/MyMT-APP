@@ -13,7 +13,10 @@
       </router-link>
     </div>
     <div>
-      <router-view></router-view>
+      <!-- 让它不要重新渲染 -->
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>

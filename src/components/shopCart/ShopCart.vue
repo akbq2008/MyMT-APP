@@ -48,7 +48,7 @@
               <li>￥{{items.total}}</li>
               <!-- 这里用不能直接用2个相乘。。得在以为是props传值，得在父组件里面先算好，再传过来 -->
               <li>
-                <cartControl :items="items"></cartControl>
+                <cartControl :items="items" :selectFood="selectFood" :isShow="isShow" @changeIs="changeIs($event)"></cartControl>
               </li>
             </ul>
           </li>
@@ -106,22 +106,17 @@ export default {
       return money;
     }
   },
-  created() {
-    init: {
+  watch: {
+    isShow() {
       this.$nextTick(() => {
-        this.goods_detail_wrap = new Bscroll(this.$refs.goods_detail_wrap);
+        // 必须保证DOM加载完毕
+        if (this.isShow) {
+          this.goods_detail_wrap = new Bscroll(this.$refs.goods_detail_wrap);
+        }
       });
     }
   },
   methods: {
-    // foodTotal() {
-    //   let total = 0;
-    //   if (!this.selectFood.total) {
-    //     Vue.set(this.selectFood, "total", 0);
-    //   }else{
-    //     this.selectFood.total=
-    //   }
-    // },
     show_detail() {
       this.isShow = !this.isShow;
     },
@@ -133,6 +128,9 @@ export default {
         }
       });
       this.isShow = !this.isShow;
+    },
+    changeIs(data) {
+      this.isShow = data;
     }
   }
 };
@@ -262,11 +260,14 @@ p.totalMoney {
   padding: 5px 0;
   font-family: "微软夜黑";
 }
-.goods_detail_content li:not(:first-of-type) {
+.goods_detail_content li {
   flex: 1;
 }
+.goods_detail_content li:last-of-type {
+  flex: 2;
+}
 .goods_detail_content li:first-of-type {
-  flex: 3;
+  flex: 6;
   padding-left: 10px;
 }
 .goods_unit {

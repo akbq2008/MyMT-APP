@@ -2,13 +2,15 @@
   <div class="goods_control">
     <transition name="move">
       <!-- 商品减少 -->
-      <div class="cart_minus" v-show="items.count" @click="decreaseNum">
+      <div class="cart_minus" v-show="items.count" @click.stop="decreaseNum">
         <span>-</span>
       </div>
     </transition>
     <span class="goods_num" v-show="items.count">{{items.count}}</span>
     <!-- 商品增加-->
-    <div class="cart_add" @click="increaseNum">
+    <div class="cart_add" @click.stop="increaseNum">
+      <!-- <div class="cart_adds">
+      </div> -->
       <span>+</span>
     </div>
   </div>
@@ -23,6 +25,12 @@ export default {
       default: function() {
         return {};
       }
+    },
+    selectFood: {
+      type: Array
+    },
+    isShow: {
+      type: Boolean
     }
   },
   methods: {
@@ -38,6 +46,12 @@ export default {
     //减少商品的个数
     decreaseNum() {
       this.items.count--;
+      if (this.selectFood) {
+        //购物车外面直接减少和购物车内减少商品
+        if (this.items.count == 0 && this.selectFood.length == 1) {
+          this.$emit("changeIs", !this.isShow);
+        }
+      }
     }
   }
 };
@@ -47,6 +61,7 @@ export default {
 .goods_control {
   display: flex;
   align-items: center;
+  margin: 0 5px;
 }
 .cart_add {
   width: 22px;
@@ -58,6 +73,14 @@ export default {
   font-size: 20px;
   cursor: pointer;
 }
+/* .cart_adds {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  position: absolute;
+  right: 4px;
+  background: red;
+} */
 .cart_minus {
   width: 20px;
   height: 20px;

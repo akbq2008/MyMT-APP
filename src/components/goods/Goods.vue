@@ -11,6 +11,9 @@
           <li @click="selectIndex(index+1)" class="menu" v-for="(item,index) in initData.food_spu_tags" :key="index" :class="{'current':currentIndex===index+1}">
             <!-- 如果有icon的话就显示 -->
             <img class="icon" v-if="item.icon" :src="item.icon" alt="hot">{{item.name}}
+            <span v-show="calculateNum(item.spus)" class="indexNum">
+              {{calculateNum(item.spus)}}
+            </span>
           </li>
         </ul>
       </div>
@@ -26,13 +29,16 @@
             <h3 class="goods_title">{{item.name}}</h3>
             <!-- 商品detail -->
             <ul class="goods_box">
-              <li class="goods_item" v-for="(items,index) in item.spus" :key="index">
+              <li class="goods_item" @click.stop="clickFood(items)" v-for="(items,index) in item.spus" :key="index">
                 <img class="goods_pic" :src="items.picture" alt="pic">
                 <div class="goods_detail">
                   <h3>{{items.name}}</h3>
                   <p class="goods_sell">
                     <span>{{items.month_saled_content}}</span>
                     <span>{{items.praise_content}}</span>
+                  </p>
+                  <p v-if="items.product_label_picture">
+                    <img :src="items.product_label_picture" alt="" class="hot_goods">
                   </p>
                   <p>
                     <span class="goods_price">￥{{items.min_price}}</span>
@@ -52,6 +58,7 @@
     <div class="shop_cart">
       <shop-cart :poi_info="poi_info" :selectFood="selectFood" :goods="goods"></shop-cart>
     </div>
+    <router-view :items="detailFood"></router-view>
   </div>
 </template>
 
@@ -68,7 +75,8 @@ export default {
       goods_content: {}, //右侧商品内容滚动
       poi_info: {}, //餐厅信息
       listHeight: [],
-      scrollY: 0 //当前的滚动高度
+      scrollY: 0, //当前的滚动高度
+      detailFood: [] //当前选中的商品
     };
   },
   components: {
@@ -86,6 +94,7 @@ export default {
           scrollY: true, //
           probeType: 3
         };
+        // console.log(this.$refs.goods_content, "2");
         this.goods_menu = new Bscroll(this.$refs.goods_menu); //左侧菜单滚动
         this.goods_content = new Bscroll(this.$refs.goods_content, options); //右侧商品内容滚动
         this.$nextTick(() => {
@@ -125,7 +134,6 @@ export default {
               Vue.set(items, "total", 0);
               items.total = items.count * items.min_price;
               shoppingCar.push(items);
-            } else {
             }
           });
         });
@@ -135,6 +143,23 @@ export default {
     }
   },
   methods: {
+    //跳转挑选商品
+    clickFood(item) {
+      this.detailFood = [];
+      this.detailFood.push(item);
+      // 这里如果用path和params传参数的话，会导致params失效，所以用name和params即可。
+      this.$router.push({ name: "detail"});
+    },
+    //左边列表的个数计算
+    calculateNum(spus) {
+      let count = 0;
+      spus.forEach(data => {
+        if (data.count > 0) {
+          count += data.count;
+        }
+      });
+      return count;
+    },
     //点击跳转到具体的位置
     selectIndex(index) {
       this.currentIndex = index;
@@ -184,6 +209,7 @@ export default {
   flex: 1;
 }
 .menu {
+  position: relative;
   padding: 16px 10px;
   border-bottom: 1px solid #e4e4e4;
 }
@@ -200,11 +226,12 @@ export default {
   margin-bottom: 10px;
   border-radius: 5px;
   width: 100%;
+  height: 76px;
 }
 /*商品的具体信息*/
 .goods_pic {
   padding: 0 5px;
-  sdisplay: inline-block;
+  display: inline-block;
   width: 70px;
   height: 75px;
 }
@@ -263,8 +290,27 @@ export default {
   left: 0;
   right: 0;
   bottom: 0px;
+  z-index: 100;
 }
 .current {
   background: #fff;
+}
+.indexNum {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  text-align: center;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: red;
+  color: white;
+  border-radius: 7.5px;
+}
+.hot_goods {
+  display: inline-block;
+  width: 50px;
+  margin-bottom: 5px;
+  height: 15px;
 }
 </style>

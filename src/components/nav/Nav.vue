@@ -12,7 +12,7 @@
         <svg class="icon" aria-hidden="true" width="16px" height="16px" fill="white">
           <use xlink:href="#icon-pindanguanli"></use>
         </svg>
-        <svg class="icon" aria-hidden="true" width="16px" height="16px" fill="white">
+        <svg class="icon" aria-hidden="true" width="20px" height="20px" fill="white">
           <use xlink:href="#icon-more_light"></use>
         </svg>
       </div>

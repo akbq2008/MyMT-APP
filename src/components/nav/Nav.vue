@@ -42,8 +42,7 @@
       <!-- 餐厅信息 -->
       <!-- 餐厅信息遮罩层 -->
       <div class="restaurant_container" v-show="isShow">
-        <div class="restaurant_wrap" v-if="restaurant_info.discounts2">
-          <img :src="restaurant_info.poi_back_pic_url" alt="">
+        <div class="restaurant_wrap" v-if="restaurant_info.discounts2" :style="{background:'url('+restaurant_info.poi_back_pic_url+')'}">
           <img :src="initData.pic_url" alt="" class="restaurant_pic">
           <h2 class="mask_name">{{restaurant_info.name}}</h2>
           <!-- 评分 -->
@@ -57,11 +56,13 @@
           <span class="hortionzal_line"></span>
           <img :src="restaurant_info.discounts2[0].icon_url" alt="">
           <span class="mask_coupon">{{restaurant_info.discounts2[0].info}}</span>
+          <!-- 关闭遮罩层 -->
+          <div class="close">
+            <svg class="icon" @click="getInfo" aria-hidden="true" width="32px" height="32px" fill="red">
+              <use xlink:href="#icon-guanbi"></use>
+            </svg>
+          </div>
         </div>
-        <!-- 关闭遮罩层 -->
-        <svg class="icon" @click="getInfo" aria-hidden="true" width="16px" height="16px" fill="white">
-          <use xlink:href="#icon-guanbi"></use>
-        </svg>
       </div>
       <!-- 餐厅信息遮罩层 -->
     </div>
@@ -174,6 +175,11 @@ export default {
 .restaurant_coupon_mes {
   margin-top: 15px;
 }
+.restaurant_wrap {
+  text-align: center;
+  flex: 1;
+  padding: 80px 0;
+}
 .restaurant_coupon_mes img,
 .restaurant_wrap img:last-of-type {
   width: 16px;
@@ -207,26 +213,17 @@ export default {
 /*餐厅的具体信息*/
 /* 餐厅遮罩层信息*/
 .restaurant_container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   top: 0;
   background: rgba(98, 98, 98, 0.8);
   z-index: 2;
 }
 
-.restaurant_wrap {
-  text-align: center;
-}
-.restaurant_wrap img:first-of-type {
-  position: absolute;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  left: 0;
-  right: 0;
-}
 .mask_name {
   color: #f4f4f4;
   margin-top: 10px;
@@ -251,6 +248,10 @@ export default {
 .mask_coupon {
   font-size: 10px;
   color: #fff;
+}
+.close {
+  position: relative;
+  top: 72px;
 }
 /* 餐厅遮罩层信息*/
 </style>

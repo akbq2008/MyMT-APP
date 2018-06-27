@@ -27,7 +27,8 @@ export default {
   name: "App",
   data() {
     return {
-      initData: {} //数据初始化
+      initData: {}, //数据初始化
+      ratings: {}
     };
   },
   components: {
@@ -57,6 +58,8 @@ export default {
   top: 40px;
   text-align: center;
   border-bottom: 1px solid #e4e4e4;
+  background: white;
+  z-index: 10;
 }
 .router_wrap a {
   position: relative;

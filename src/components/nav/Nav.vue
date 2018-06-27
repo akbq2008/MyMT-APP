@@ -112,7 +112,6 @@ export default {
 <style scoped>
 .nav_container {
   position: relative;
-  // height: 100vh;
 }
 .nav_pic {
   position: absolute;
@@ -132,7 +131,6 @@ export default {
   position: relative;
   top: 30px;
   padding-left: 10px;
-  // margin-left: 10px;
 }
 .restaurant_pic {
   width: 40px;
@@ -176,9 +174,11 @@ export default {
   margin-top: 15px;
 }
 .restaurant_wrap {
+  width: 65%;
   text-align: center;
-  flex: 1;
-  padding: 80px 0;
+  padding: 80px 40px;
+  margin: 0 auto;
+  border-radius: 10px;
 }
 .restaurant_coupon_mes img,
 .restaurant_wrap img:last-of-type {

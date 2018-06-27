@@ -58,13 +58,15 @@
     <div class="shop_cart">
       <shop-cart :poi_info="poi_info" :selectFood="selectFood" :goods="goods"></shop-cart>
     </div>
-    <router-view :items="detailFood"></router-view>
+    <product-detail :items="detailFood" v-show="showFood" :showFood="showFood" @hideFood="hideFood($event)"></product-detail>
+    <!-- <router-view :items="detailFood"></router-view> -->
   </div>
 </template>
 
 <script>
 import CartControl from "../cartControl/CartControl";
 import ShopCart from "../shopCart/ShopCart";
+import ProductDetail from "../productDetail/ProductDetail";
 import Bscroll from "better-scroll";
 import Vue from "vue";
 export default {
@@ -76,12 +78,14 @@ export default {
       poi_info: {}, //餐厅信息
       listHeight: [],
       scrollY: 0, //当前的滚动高度
-      detailFood: [] //当前选中的商品
+      detailFood: [], //当前选中的商品
+      showFood: false //详情页是否显示
     };
   },
   components: {
     "app-add": CartControl,
-    "shop-cart": ShopCart
+    "shop-cart": ShopCart,
+    "product-detail": ProductDetail
   },
   created() {
     getMenu: {
@@ -148,7 +152,13 @@ export default {
       this.detailFood = [];
       this.detailFood.push(item);
       // 这里如果用path和params传参数的话，会导致params失效，所以用name和params即可。
-      this.$router.push({ name: "detail"});
+      // this.$router.push({ name: "detail" });
+      this.showFood = !this.showFood;
+    },
+    // 隐藏商品明细
+    hideFood() {
+      this.showFood = !this.showFood;
+      // this.$router.go(-1);
     },
     //左边列表的个数计算
     calculateNum(spus) {

@@ -5,7 +5,7 @@
 html{-webkit-text-size-adjust:none;}
 body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0px;padding:0px;}
 html{background:#FFFFFF}
-body{font-family:Arial, tahoma, arial, \5b8b\4f53, sans-serif; font-size:12px; text-align:left; background:#FFFFFF; }
+body{overflow:hidden;font-family:Arial, tahoma, arial, \5b8b\4f53, sans-serif; font-size:12px; text-align:left; background:#FFFFFF; }
 table,input,textarea,select{font-size:12px;}
 h1,h2,h3,h4,h5,h6{font-size:12px;font-weight:normal} 
 a{outline:none;text-decoration:none;}
